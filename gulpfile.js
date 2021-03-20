@@ -93,20 +93,9 @@ gulp.task('templates', function () {
     );
 });
 
-// Creates `dist` directory if not created and
-// creates `oauth.json`.
-gulp.task('oauth', function () {
-  mkdirp(dist);
-  return gulp.src('')
-    .pipe(
-      shell([
-        '[ -f oauth.json ] && echo "Using existing oauth.json." || curl "https://raw.githubusercontent.com/prose/prose/gh-pages/oauth.json" > oauth.json'
-      ])
-    );
-});
 
 // Build tests, then concatenate with vendor scripts
-gulp.task('build-tests', ['templates', 'oauth'], function() {
+gulp.task('build-tests', ['templates'], function() {
   var tests = browserify({
     debug: true,
     noParse: [require.resolve('handsontable/dist/handsontable.full')]
@@ -123,7 +112,7 @@ gulp.task('build-tests', ['templates', 'oauth'], function() {
 });
 
 // Browserify app scripts, then concatenate with vendor scripts into `prose.js`.
-gulp.task('build-app', ['templates', 'oauth'], function() {
+gulp.task('build-app', ['templates'], function() {
   var app = browserify({
     noParse: [require.resolve('handsontable/dist/handsontable.full')]
   })

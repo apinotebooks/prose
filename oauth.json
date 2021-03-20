@@ -1,0 +1,6 @@
+{
+  "api": "https://api.github.com",
+  "site": "https://github.com",
+  "clientId": "c926f27be7616cdc560a",
+  "gatekeeperUrl": "https://localhost:44367/api/GitHubAuth/authorize?code="
+}

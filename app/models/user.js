@@ -26,7 +26,7 @@ module.exports = Backbone.Model.extend({
       var parsed = url.parse(window.location.href, true);
       var code = parsed.query && parsed.query.code;
       if (code) {
-        var ajax = $.ajax(auth.url + '/authenticate/' + code, {
+        var ajax = $.ajax(auth.url + code, {
           success: function(data) {
             cookie.set('oauth-token', data.token);
             var newHref = url.format({
