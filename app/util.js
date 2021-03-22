@@ -81,7 +81,8 @@ module.exports = {
   // Extract file extension
   // -------
 
-  extension: function(file) {
+  extension: function(file) {    
+    if(file.endsWith(".notebook.md")) return "notebook.md";
     var match = file.match(/\.(\w+)$/);
     return match ? match[1] : null;
   },

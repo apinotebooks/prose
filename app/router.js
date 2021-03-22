@@ -17,6 +17,7 @@ var SearchView = require('./views/search');
 var ReposView = require('./views/repos');
 var RepoView = require('./views/repo');
 var FileView = require('./views/file');
+var NotebookView = require('./views/notebook');
 var DocumentationView = require('./views/documentation');
 var ChooseLanguageView = require('./views/chooselanguage');
 
@@ -237,9 +238,10 @@ module.exports = Backbone.Router.extend({
       case 'blob':
       case 'edit':
       case 'preview':
+      case 'notebook':
         this.post(login, repoName, url.mode, url.branch, url.path);
         break;
-      default:
+      default:        
         throw url.mode;
     }
   },
@@ -248,7 +250,8 @@ module.exports = Backbone.Router.extend({
     if (this.view) this.view.remove();
 
     this.app.nav.mode('file');
-
+    this.mode = mode;
+     
     switch(mode) {
       case 'new':
         this.app.loader.start(t('loading.creating'));
@@ -258,6 +261,9 @@ module.exports = Backbone.Router.extend({
         break;
       case 'preview':
         this.app.loader.start(t('loading.preview'));
+        break;
+      case 'notebook':
+        this.app.loader.start('Loading Notebook'); // t('loading.notebook')
         break;
     }
 
@@ -291,8 +297,8 @@ module.exports = Backbone.Router.extend({
     user.fetch({
       success: (function(model, res, options) {
         repo.fetch({
-          success: (function(model, res, options) {
-            this.view = new FileView(file);
+          success: (function(model, res, options) {           
+            this.view = this.mode == "notebook" ? new NotebookView(file) : new FileView(file);
             this.app.$el.find('#main').html(this.view.el);
           }).bind(this),
           error: (function(model, xhr, options) {
