@@ -24,7 +24,7 @@ var templates = require('../../dist/templates');
 module.exports = Backbone.View.extend({
   id: 'post',
 
-  template: templates.file,
+  template: templates.notebook,
 
   subviews: {},
 
@@ -112,7 +112,7 @@ module.exports = Backbone.View.extend({
     switch(this.mode) {
       case 'edit':
       case 'blob':
-      case 'notebook':
+      case 'notebook':        
         this.model = this.collection.findWhere({ path: this.path });
         break;
       case 'preview':
@@ -373,6 +373,26 @@ module.exports = Backbone.View.extend({
 
     var code = this.$el.find('#code')[0];
     code.value = this.model.get('content') || '';
+
+    const mount = document.querySelector("#sandbox");
+
+    const el = new StarboardNotebookIFrame({
+        notebookContent: "# %% [javascript]\n3+5\n",
+        src: "https://unpkg.com/starboard-notebook@latest/dist/index.html"
+    });
+
+    el.style.width = "100%";
+    mount.appendChild(el);
+    el.notebookContent="# %% [javascript]\n3+5\n";
+    var content = "# %% [javascript]\n3+5\n";
+    el.sendMessage({
+      type: "NOTEBOOK_SET_INIT_DATA", payload: {content}
+  });
+    this.editor = el;
+    debugger;
+    return;
+
+
     // TODO: set default content for CodeMirror
     this.editor = CodeMirror.fromTextArea(code, {
       mode: lang,
@@ -578,7 +598,7 @@ module.exports = Backbone.View.extend({
         lang: this.model.get('lang'),
         useCSVEditor: (['csv', 'tsv'].indexOf(this.model.get('lang')) !== -1 && !cookie.get('disableCSVEditor'))
       };
-
+      
       this.$el.empty().append(_.template(this.template, file, {
         variable: 'file'
       }));
@@ -596,7 +616,8 @@ module.exports = Backbone.View.extend({
       this.initToolbar();
       this.initSidebar();
 
-      var mode = ['file'];
+      var mode = ['notebook'];
+     
       var markdown = this.model.get('markdown');
       var jekyll = /^(_posts|_drafts)/.test(this.model.get('path'));
 
@@ -783,6 +804,7 @@ module.exports = Backbone.View.extend({
 
     function getLayout(cb) {
       var file = p.page.layout;
+      debugger;
       var layout = this.collection.findWhere({ path: '_layouts/' + file + '.html' });
 
       layout.fetch({
@@ -818,6 +840,7 @@ module.exports = Backbone.View.extend({
       });
     }
 
+    debugger;
     if (p.page.layout) {
       q.defer(getLayout.bind(this));
     }
