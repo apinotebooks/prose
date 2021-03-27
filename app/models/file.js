@@ -145,7 +145,6 @@ module.exports = Backbone.Model.extend({
 
   serialize: function() {
     var metadata = this.get('metadata');
-
     var content = this.get('content') || '';
     var frontmatter;
 

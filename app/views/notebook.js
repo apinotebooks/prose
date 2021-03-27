@@ -369,30 +369,33 @@ module.exports = Backbone.View.extend({
   },
 
   initEditor: function() {
+    
     var lang = this.model.get('lang');
 
     var code = this.$el.find('#code')[0];
-    code.value = this.model.get('content') || '';
+    var content = this.model.get('content') || '\n';
 
     const mount = document.querySelector("#sandbox");
 
     const el = new StarboardNotebookIFrame({
-        notebookContent: "# %% [javascript]\n3+5\n",
-        src: "https://unpkg.com/starboard-notebook@latest/dist/index.html"
+        notebookContent: content,
+        debug: false,
+        notebookContainer: this,
+        src: "http://localhost:5000/dist/notebook/notebook.html",        
+        onContentUpdateMessage: function(e) { 
+          this.notebookContainer.makeDirty();
+        }
     });
 
     el.style.width = "100%";
+    console.log("appendChild");
     mount.appendChild(el);
-    el.notebookContent="# %% [javascript]\n3+5\n";
-    var content = "# %% [javascript]\n3+5\n";
-    el.sendMessage({
-      type: "NOTEBOOK_SET_INIT_DATA", payload: {content}
-  });
+ 
     this.editor = el;
-    debugger;
-    return;
+    window.notebook = el;
+  
 
-
+/*
     // TODO: set default content for CodeMirror
     this.editor = CodeMirror.fromTextArea(code, {
       mode: lang,
@@ -429,7 +432,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.editor, 'change', this.makeDirty, this);
     this.listenTo(this.editor, 'focus', this.focus, this);
 
-    this.refreshCodeMirror();
+    this.refreshCodeMirror(); 
+*/
 
     // Check sessionStorage for existing stash
     // Apply if stash exists and is current, remove if expired
@@ -616,7 +620,8 @@ module.exports = Backbone.View.extend({
       this.initToolbar();
       this.initSidebar();
 
-      var mode = ['notebook'];
+      // setup toolbar
+      var mode = ['file']; 
      
       var markdown = this.model.get('markdown');
       var jekyll = /^(_posts|_drafts)/.test(this.model.get('path'));
@@ -707,7 +712,7 @@ module.exports = Backbone.View.extend({
     if (jekyll && e) {
       // TODO: this could all be removed if preview button listened to
       // change:path event on model
-      this.nav.setFileState('edit'); // Return to edit because we are creating a new window
+      this.nav.setFileState('notebook'); // Return to edit because we are creating a new window
       this.stashFile();
 
       var hash = this.absoluteFilepath().split('/');
@@ -804,7 +809,7 @@ module.exports = Backbone.View.extend({
 
     function getLayout(cb) {
       var file = p.page.layout;
-      debugger;
+      
       var layout = this.collection.findWhere({ path: '_layouts/' + file + '.html' });
 
       layout.fetch({
@@ -840,7 +845,7 @@ module.exports = Backbone.View.extend({
       });
     }
 
-    debugger;
+    
     if (p.page.layout) {
       q.defer(getLayout.bind(this));
     }
@@ -924,8 +929,8 @@ module.exports = Backbone.View.extend({
     this.dirty = true;
 
     // Update Content.
-    if (this.editor && this.editor.getValue) {
-      this.model.set('content', this.editor.getValue());
+    if (this.editor && this.editor.notebookContent) {
+      this.model.set('content', this.editor.notebookContent);
     }
 
     var label = this.model.get('writable') ?
@@ -1269,8 +1274,8 @@ module.exports = Backbone.View.extend({
       view.modal.render();
     }).bind(this));
 
-    // Update content
-    this.model.content = (this.editor) ? this.editor.getValue() : '';
+    // Update content    
+    this.model.content = (this.editor) ? this.editor.notebookContent : '';
 
     // Delegate
     method.call(this, {

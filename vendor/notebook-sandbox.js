@@ -1462,7 +1462,8 @@ function loadDefaultSettings(opts, el) {
         onContentUpdateMessage: (_j = opts.onContentUpdateMessage) !== null && _j !== void 0 ? _j : function () { },
         onSaveMessage: (_k = opts.onSaveMessage) !== null && _k !== void 0 ? _k : function () { },
         onMessage: (_l = opts.onMessage) !== null && _l !== void 0 ? _l : function () { },
-        notebookContent: opts.notebookContent
+        notebookContent: opts.notebookContent,
+        notebookContainer: opts.notebookContainer
     };
 }
 class StarboardNotebookIFrame extends HTMLIFrameElement {
