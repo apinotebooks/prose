@@ -1,0 +1,1 @@
+{"version":3,"file":"detect.js","sourceRoot":"","sources":["../../../../src/components/helpers/detect.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,MAAM,UAAU,oBAAoB;IAChC,IAAI;QACA,QAAQ,CAAC,WAAW,CAAC,YAAY,CAAC,CAAC;QACnC,OAAO,IAAI,CAAC;KACf;IAAC,OAAO,CAAC,EAAE;QACR,OAAO,KAAK,CAAC;KAChB;AACL,CAAC"}

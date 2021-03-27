@@ -1,0 +1,1 @@
+{"version":3,"file":"emoji.js","sourceRoot":"","sources":["../../../../src/components/helpers/emoji.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,MAAM,mBAAmB,CAAC;AAEtC,MAAM,UAAU,2BAA2B,CAAC,kBAA8B,EAAE,aAAa,GAAG,KAAK;IAC7F,kBAAkB,CAAC,GAAG,CAAC,KAAK,EAAE,EAAC,SAAS,EAAE,aAAa,CAAA,CAAC,CAAC,SAAS,CAAC,CAAC,CAAC,EAAE,EAAC,CAAC,CAAC;AAC9E,CAAC"}
