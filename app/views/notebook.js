@@ -699,7 +699,7 @@ module.exports = Backbone.View.extend({
 
     this.contentMode('edit');
     this.mode = this.model.isNew() ? 'new' : 'edit';
-    this.nav.setFileState(this.mode);
+    this.nav.setFileState('notebook'); // this.mode);
     this.updateURL();
   },
 
@@ -1090,7 +1090,7 @@ module.exports = Backbone.View.extend({
     });
 
     this.sidebar.close();
-    this.nav.active('edit');
+    this.nav.active('notebook');
 
     this.model.fetch({ complete: this.render });
   },

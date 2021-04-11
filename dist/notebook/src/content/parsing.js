@@ -124,10 +124,6 @@ export function parseNotebookContent(notebookContentString) {
     let currentlyInCellMetadataBlock = false;
     let currentCellMetadataCommentPrefix = "";
     for (const line of allLines.slice(cellLinesStartIndex)) {
-        var ct = "no cell";
-        if (currentCell != undefined)
-            ct = currentCell.type;
-        console.log(ct + ": " + line);
         if (line.trimRight() === "\`\`\`") {
             if (currentCell) {
                 if (currentCell.type === "markdown") {
@@ -146,18 +142,19 @@ export function parseNotebookContent(notebookContentString) {
                 currentlyInCellMetadataBlock = false;
             }
             let infoString = line.substring(3).trimLeft();
-            console.log("infoString " + infoString);
             let cellParameters = "";
+            let cellMetadata = {};
             let cellType = infoString;
             let spacePos = infoString.indexOf(" ");
             if (spacePos > 1) {
                 cellParameters = infoString.substring(spacePos + 1);
+                cellMetadata = JSON.parse(cellParameters);
                 cellType = infoString.substring(0, spacePos);
             }
-            console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX");
+            console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
             currentCell = {
                 type: cellType,
-                metadata: {},
+                metadata: cellMetadata,
                 lines: []
             };
             /* todo: define metadata handling ? inline json?

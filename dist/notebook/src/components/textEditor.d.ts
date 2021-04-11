@@ -5,7 +5,7 @@
 import { LitElement } from "lit-element";
 import { Cell } from "../types";
 import { Runtime } from "../runtime";
-export declare type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex";
+export declare type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "latex";
 export declare type WordWrapSetting = "off" | "on";
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.

@@ -25,11 +25,16 @@ export function cellToText(cell) {
         cellHeader = `${PreferredCellDelimiter}${cell.cellType}`;
     }
     else {
+        cellHeader = `${PreferredCellDelimiter}${cell.cellType} `;
+        cellHeader = cellHeader + JSON.stringify(cell.metadata);
+        /*
         let ymlCellMetadata = YAML.stringify(cell.metadata);
         // Add a comment marker to each of the lines.
         // The last line contains a trailing \n, which we slice off
         ymlCellMetadata = ymlCellMetadata.split("\n").slice(0, -1).map(s => PreferredCellDelimiter.replace("%%", "") + s).join("\n");
+
         cellHeader = `${PreferredCellDelimiter}${cell.cellType}\n${ymlCellMetadata}\n${PreferredCellDelimiter.replace("%%", "---%%")}`;
+        */
     }
     const cellText = `${cellHeader}\n${cell.textContent}\n${PreferredCellDelimiter}`;
     return cellText;
